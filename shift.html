@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>シフト希望入力 | ナリシフト</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🐾 ナリシフト</h1>
+
+<h2>シフト希望入力</h2>
+
+<label>スタッフ</label><br>
+<select id="staff">
+    <option>山本さん</option>
+    <option>吉田さん</option>
+    <option>市川さん</option>
+    <option>中村さん</option>
+    <option>杉浦さん</option>
+</select>
+
+<br><br>
+
+<label>日付</label><br>
+<input type="date" id="date">
+
+<br><br>
+
+<label>勤務時間</label><br>
+<select id="workTime"></select>
+
+<br><br>
+
+<label>
+<input type="checkbox" id="paidLeave">
+有給希望
+</label>
+
+<br><br>
+
+<label>備考</label><br>
+<textarea id="memo" rows="4"></textarea>
+
+<br><br>
+
+<button id="saveButton">保存</button>
+
+<br><br>
+
+<a href="manager.html">
+<button>カレンダーへ戻る</button>
+</a>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
