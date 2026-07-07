@@ -1,31 +1,107 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
     <title>管理者画面 | ナリシフト</title>
+
     <link rel="stylesheet" href="style.css">
-    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.18/index.global.min.css" rel="stylesheet">
+
 </head>
 
 <body>
 
 <div class="container">
 
-<h1>🐾 ナリシフト</h1>
+    <!-- ヘッダー -->
 
-<h2>管理者画面</h2>
+    <header class="header">
 
-<h3 id="monthTitle"></h3>
+        <div class="hospital-name">
 
-<div id="calendar"></div>
+            なりた犬猫病院
 
-<a href="index.html">
-<button>ホームへ戻る</button>
-</a>
+        </div>
+
+        <h1 class="title">
+
+            管理者画面
+
+        </h1>
+
+        <p class="subtitle">
+
+            スタッフ希望一覧
+
+        </p>
+
+    </header>
+
+    <!-- 戻る -->
+
+    <div style="margin-bottom:25px;">
+
+        <button onclick="goHome()">
+
+            ← トップへ戻る
+
+        </button>
+
+    </div>
+
+    <!-- スタッフ色分け -->
+
+    <div class="card">
+
+        <h2>
+
+            スタッフ
+
+        </h2>
+
+        <br>
+
+        <p>🔵 山本</p>
+
+        <p>🔴 吉田</p>
+
+        <p>🟡 市川</p>
+
+        <p>🟢 中村</p>
+
+        <p>🟣 杉浦</p>
+
+    </div>
+
+    <!-- カレンダー -->
+
+    <div class="card">
+
+        <h2 id="monthTitle">
+
+            今月の希望一覧
+
+        </h2>
+
+        <div id="calendar">
+
+            <!-- calendar.js が生成 -->
+
+        </div>
+
+    </div>
 
 </div>
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.18/index.global.min.js"></script>
+
+<script src="staffData.js"></script>
+<script src="script.js"></script>
 <script src="calendar.js"></script>
+
 </body>
+
 </html>

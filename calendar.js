@@ -1,43 +1,453 @@
-const monthTitle = document.getElementById("monthTitle");
-const calendar = document.getElementById("calendar");
+/*
+========================================
+ ナリシフト Version1
+ calendar.js
+ (1/6)
+========================================
+*/
+
+/*======================================
+  日付
+======================================*/
 
 const today = new Date();
 
-const year = today.getFullYear();
-const month = today.getMonth() + 1;
+const currentYear = today.getFullYear();
+const currentMonth = today.getMonth();
 
-monthTitle.textContent = `${year}年 ${month}月`;
+/*======================================
+  状態管理
+======================================*/
 
-// 曜日
-const week = ["月","火","水","木","金","土","日"];
+let selectedDay = null;
+let selectedStaff = "";
 
-week.forEach(day => {
+/*======================================
+  HTML取得
+======================================*/
 
-    const w = document.createElement("div");
+const monthTitle = document.getElementById("monthTitle");
+const calendar = document.getElementById("calendar");
 
-    w.textContent = day;
+const staffSelect = document.getElementById("staffSelect");
 
-    w.style.fontWeight = "bold";
-    w.style.textAlign = "center";
-    w.style.padding = "10px";
+const shiftType = document.getElementById("shiftType");
 
-    calendar.appendChild(w);
+const workPattern = document.getElementById("workPattern");
 
-});
+const memo = document.getElementById("memo");
 
-// 日付
-for(let i=1;i<=31;i++){
+const selectedDate = document.getElementById("selectedDate");
 
-    const button=document.createElement("button");
+const saveButton = document.getElementById("saveButton");
 
-    button.textContent=i;
+/*======================================
+  初期化
+======================================*/
 
-    button.onclick=()=>{
+window.addEventListener("DOMContentLoaded", init);
 
-        alert(`${month}月${i}日`);
+function init() {
+
+    if (staffSelect) {
+
+        createStaffList();
+
+        staffSelect.addEventListener(
+            "change",
+            changeStaff
+        );
 
     }
 
-    calendar.appendChild(button);
+    if (calendar && !staffSelect) {
+
+        createManagerCalendar();
+
+    }
+
+}
+
+
+/*======================================
+ スタッフ一覧
+======================================*/
+
+function createStaffList() {
+
+    staffSelect.innerHTML = "";
+
+    const first =
+        document.createElement("option");
+
+    first.value = "";
+    first.textContent =
+        "スタッフを選択してください";
+
+    staffSelect.appendChild(first);
+
+    getAllStaff().forEach(staff => {
+
+        const option =
+            document.createElement("option");
+
+        option.value = staff.name;
+
+        option.textContent =
+            `${staff.icon} ${staff.name}`;
+
+        staffSelect.appendChild(option);
+
+    });
+
+}
+
+/*======================================
+ スタッフ変更
+======================================*/
+
+function changeStaff() {
+
+    selectedStaff =
+        staffSelect.value;
+
+    createPatternList();
+
+    if (typeof createCalendar === "function") {
+
+        createCalendar();
+
+    }
+
+}
+
+/*======================================
+ 勤務パターン生成
+======================================*/
+
+function createPatternList() {
+
+    workPattern.innerHTML = "";
+
+    const first =
+        document.createElement("option");
+
+    first.value = "";
+
+    first.textContent =
+        "勤務パターンを選択";
+
+    workPattern.appendChild(first);
+
+    if (!selectedStaff) return;
+
+    const patterns =
+        getPatterns(selectedStaff);
+
+    patterns.forEach(pattern => {
+
+        const option =
+            document.createElement("option");
+
+        option.value = pattern;
+
+        option.textContent = pattern;
+
+        workPattern.appendChild(option);
+
+    });
+
+}
+
+/*======================================
+ LocalStorageキー
+======================================*/
+
+function createStorageKey(day) {
+
+    return `${currentYear}-${currentMonth + 1}-${day}-${selectedStaff}`;
+
+}
+
+/*======================================
+ データ取得
+======================================*/
+
+function getSavedData(day) {
+
+    const key =
+        createStorageKey(day);
+
+    const data =
+        localStorage.getItem(key);
+
+    if (!data) {
+
+        return null;
+
+    }
+
+    return JSON.parse(data);
+
+}
+/*======================================
+ カレンダー表示（2/6）
+======================================*/
+
+function createCalendar() {
+
+    calendar.innerHTML = "";
+
+    monthTitle.textContent =
+        `${currentYear}年${currentMonth + 1}月`;
+
+    const weekDays = ["日","月","火","水","木","金","土"];
+
+    weekDays.forEach(w => {
+
+        const el = document.createElement("div");
+        el.className = "calendar-weekday";
+        el.textContent = w;
+        calendar.appendChild(el);
+
+    });
+
+    const firstDay =
+        new Date(currentYear, currentMonth, 1).getDay();
+
+    const lastDate =
+        new Date(currentYear, currentMonth + 1, 0).getDate();
+
+    for (let i = 0; i < firstDay; i++) {
+
+        const empty = document.createElement("div");
+        calendar.appendChild(empty);
+
+    }
+
+    for (let day = 1; day <= lastDate; day++) {
+
+        const dayEl = document.createElement("div");
+        dayEl.className = "calendar-day";
+
+        const dayNumber = document.createElement("div");
+        dayNumber.className = "day-number";
+        dayNumber.textContent = day;
+        dayEl.appendChild(dayNumber);
+
+        const saved = getSavedData(day);
+
+        if (saved) {
+
+            const info = document.createElement("div");
+            info.className = "day-info";
+
+            info.textContent =
+                saved.type === "勤務"
+                    ? saved.pattern
+                    : saved.type;
+
+            dayEl.appendChild(info);
+
+        }
+
+        if (selectedDay === day) {
+
+            dayEl.classList.add("selected");
+
+        }
+
+        dayEl.addEventListener("click", function () {
+
+            selectDay(day);
+
+        });
+
+        calendar.appendChild(dayEl);
+
+    }
+
+}
+
+/*======================================
+ 日付クリック時の処理
+======================================*/
+
+function selectDay(day) {
+
+    if (!selectedStaff) {
+
+        showMessage("先にスタッフを選択してください");
+        return;
+
+    }
+
+    selectedDay = day;
+
+    selectedDate.textContent =
+        `${currentYear}年${currentMonth + 1}月${day}日`;
+
+    const saved = getSavedData(day);
+
+    if (saved) {
+
+        shiftType.value = saved.type || "";
+        workPattern.value = saved.pattern || "";
+        memo.value = saved.memo || "";
+
+    } else {
+
+        shiftType.value = "";
+        workPattern.value = "";
+        memo.value = "";
+
+    }
+
+    createCalendar();
+
+}
+/*======================================
+ 保存ボタンの処理（3/6）
+======================================*/
+
+if (saveButton) {
+
+saveButton.addEventListener("click", function () {
+
+    if (!selectedStaff) {
+
+        showMessage("スタッフを選択してください");
+        return;
+
+    }
+
+    if (!selectedDay) {
+
+        showMessage("日付を選択してください");
+        return;
+
+    }
+
+    if (isDeadlinePassed()) {
+
+        deadlineMessage();
+        return;
+
+    }
+
+    const type = shiftType.value;
+
+    if (!type) {
+
+        showMessage("希望区分を選択してください");
+        return;
+
+    }
+
+    if (type === "勤務" && !workPattern.value) {
+
+        showMessage("勤務パターンを選択してください");
+        return;
+
+    }
+
+    const data = {
+
+        type: type,
+        pattern: type === "勤務" ? workPattern.value : "",
+        memo: memo.value
+
+    };
+
+    const key = createStorageKey(selectedDay);
+
+    localStorage.setItem(key, JSON.stringify(data));
+
+    saveComplete();
+
+    createCalendar();
+
+});
+
+}
+
+/*======================================
+ 管理者用カレンダー表示（4/6）
+======================================*/
+
+function createManagerCalendar() {
+
+    calendar.innerHTML = "";
+
+    monthTitle.textContent =
+        `${currentYear}年${currentMonth + 1}月`;
+
+    const weekDays = ["日","月","火","水","木","金","土"];
+
+    weekDays.forEach(w => {
+
+        const el = document.createElement("div");
+        el.className = "calendar-weekday";
+        el.textContent = w;
+        calendar.appendChild(el);
+
+    });
+
+    const firstDay =
+        new Date(currentYear, currentMonth, 1).getDay();
+
+    const lastDate =
+        new Date(currentYear, currentMonth + 1, 0).getDate();
+
+    for (let i = 0; i < firstDay; i++) {
+
+        const empty = document.createElement("div");
+        calendar.appendChild(empty);
+
+    }
+
+    for (let day = 1; day <= lastDate; day++) {
+
+        const dayEl = document.createElement("div");
+        dayEl.className = "calendar-day";
+
+        const dayNumber = document.createElement("div");
+        dayNumber.className = "day-number";
+        dayNumber.textContent = day;
+        dayEl.appendChild(dayNumber);
+
+        getAllStaff().forEach(staff => {
+
+            const key =
+                `${currentYear}-${currentMonth + 1}-${day}-${staff.name}`;
+
+            const data =
+                localStorage.getItem(key);
+
+            if (data) {
+
+                const parsed = JSON.parse(data);
+
+                const line = document.createElement("div");
+                line.className = "manager-day-line";
+                line.style.color = staff.color;
+
+                const label =
+                    parsed.type === "勤務"
+                        ? parsed.pattern
+                        : parsed.type;
+
+                line.textContent =
+                    `${staff.icon} ${label}`;
+
+                dayEl.appendChild(line);
+
+            }
+
+        });
+
+        calendar.appendChild(dayEl);
+
+    }
 
 }

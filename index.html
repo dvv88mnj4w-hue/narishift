@@ -4,32 +4,92 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ナリシフト</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-   <div class="container"></div> 
 
-    <h1>🐾 ナリシフト</h1>
+<div class="container">
 
-    <h2>なりた犬猫病院</h2>
+    <!-- ヘッダー -->
+    <header class="header">
 
-    <hr>
+        <div class="hospital-name">
+            なりた犬猫病院
+        </div>
 
-    <h3>スタッフ</h3>
+        <h1 class="title">
+            🐾 ナリシフト 🐾
+        </h1>
 
-    <a href="staff.html">
-    <button>シフト希望を提出する</button>
-</a>
+        <p class="subtitle">
+            パート・アルバイト専用シフト希望システム
+        </p>
 
-    <br><br>
+    </header>
 
-    <hr>
+    <!-- メニュー -->
+    <main>
 
-    <h3>管理者</h3>
+        <div class="menu-grid">
 
-    <a href="manager.html">
-    <button>希望一覧を見る</button>
-</a>
+            <div class="menu-card"
+                 onclick="goStaff()">
+
+                <div class="icon">
+                    📅
+                </div>
+
+                <h2>
+                    シフト希望を提出
+                </h2>
+
+                <p>
+                    希望する勤務日を入力します
+                </p>
+
+            </div>
+
+            <div class="menu-card"
+                 onclick="goManager()">
+
+                <div class="icon">
+                    📋
+                </div>
+
+                <h2>
+                    管理者画面
+                </h2>
+
+                <p>
+                    スタッフ全員の希望を確認します
+                </p>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- フッター -->
+
+    <footer class="footer">
+
+        <p>
+            NariShift Version 1.0
+        </p>
+
+        <p>
+            © Narita Animal Hospital
+        </p>
+
+    </footer>
+
 </div>
+
+<script src="script.js"></script>
+
 </body>
 </html>
+

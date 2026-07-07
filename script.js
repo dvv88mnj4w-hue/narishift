@@ -1,51 +1,97 @@
-const staff = document.getElementById("staff");
-const workTime = document.getElementById("workTime");
+/*
+=====================================
+ ナリシフト Version1
+ 共通JavaScript
+=====================================
+*/
 
-const pattern = {
-  "山本さん": ["8:30～12:30"],
-  "吉田さん": ["8:30～13:30", "8:30～16:00"],
-  "市川さん": ["8:30～12:30"],
-  "中村さん": ["8:30～14:00"],
-  "杉浦さん": ["8:30～13:30", "17:00～21:00"]
-};
+/*------------------------------
+ 画面遷移
+------------------------------*/
 
-staff.addEventListener("change", () => {
-
-    workTime.innerHTML = "";
-
-    pattern[staff.value].forEach(time => {
-
-        const option = document.createElement("option");
-
-        option.text = time;
-
-        workTime.add(option);
-
-    });
-
-});
-
-staff.dispatchEvent(new Event("change"));
-// ===== 保存 =====
-
-const saveButton = document.getElementById("saveButton");
-
-if (saveButton) {
-
-    saveButton.addEventListener("click", () => {
-
-        const shift = {
-            staff: document.getElementById("staff").value,
-            date: document.getElementById("date").value,
-            workTime: document.getElementById("workTime").value,
-            paidLeave: document.getElementById("paidLeave").checked,
-            memo: document.getElementById("memo").value
-        };
-
-        localStorage.setItem("narishift", JSON.stringify(shift));
-
-        alert("保存しました🐾");
-
-    });
-
+// スタッフ画面へ
+function goStaff() {
+    window.location.href = "staff.html";
 }
+
+// 管理者画面へ
+function goManager() {
+    window.location.href = "manager.html";
+}
+
+// トップへ戻る
+function goHome() {
+    window.location.href = "index.html";
+}
+
+
+/*------------------------------
+ 日付取得
+------------------------------*/
+
+function getToday() {
+    return new Date();
+}
+
+function getYear() {
+    return getToday().getFullYear();
+}
+
+function getMonth() {
+    return getToday().getMonth() + 1;
+}
+
+function getDateNumber() {
+    return getToday().getDate();
+}
+
+
+/*------------------------------
+ 締切判定
+
+15日まで
+スタッフ編集可能
+
+16日以降
+スタッフ編集不可
+------------------------------*/
+
+function isDeadlinePassed() {
+    return getDateNumber() >= 16;
+}
+
+
+/*------------------------------
+ メッセージ表示
+------------------------------*/
+
+function showMessage(message) {
+    alert(message);
+}
+
+
+/*------------------------------
+ 保存完了
+------------------------------*/
+
+function saveComplete() {
+    showMessage("保存しました。");
+}
+
+
+/*------------------------------
+ 編集不可
+------------------------------*/
+
+function deadlineMessage() {
+    showMessage("16日以降は編集できません。");
+}
+
+
+/*------------------------------
+ 初期化
+------------------------------*/
+
+window.onload = function () {
+    console.log("NariShift Version1");
+};

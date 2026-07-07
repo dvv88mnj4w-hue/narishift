@@ -1,51 +1,173 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>スタッフ入力 | ナリシフト</title>
- <link rel="stylesheet" href="style.css">   
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>ナリシフト｜スタッフ画面</title>
+
+<link rel="stylesheet" href="style.css">
+
 </head>
+
 <body>
+
+<div class="container">
+
+<header class="header">
 
 <h1>🐾 ナリシフト</h1>
 
-<h2>スタッフ入力</h2>
+<p>なりた犬猫病院</p>
 
-<label>名前</label><br>
-<select id="staff">
-    <option>山本さん</option>
-    <option>吉田さん</option>
-    <option>中村さん</option>
-    <option>市川さん</option>
+</header>
+
+
+<div class="card">
+
+<h2>
+
+シフト希望提出
+
+</h2>
+
+<label>
+
+スタッフ
+
+</label>
+
+<select id="staffSelect">
+
 </select>
 
-<br><br>
+</div>
 
-<label>勤務パターン</label><br>
-<select id="workTime">
-    <option>8:30～12:30</option>
+
+<div class="card">
+
+<h2 id="monthTitle">
+
+2026年7月
+
+</h2>
+
+<div id="calendar">
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+
+シフト入力
+
+</h2>
+
+<p>
+
+選択日：
+
+<span id="selectedDate">
+
+未選択
+
+</span>
+
+</p>
+
+<br>
+
+<label>
+
+希望区分
+
+</label>
+
+<select id="shiftType">
+
+<option value="">
+
+選択してください
+
+</option>
+
+<option value="勤務">
+
+勤務
+
+</option>
+
+<option value="休み">
+
+休み
+
+</option>
+
+<option value="有給">
+
+有給
+
+</option>
+
 </select>
 
+<label>
+
+勤務パターン
+
+</label>
+
+<select id="workPattern">
+
+</select>
+
+<label>
+
+備考
+
+</label>
+
+<textarea
+id="memo"
+rows="4"
+placeholder="備考を入力してください"></textarea>
+
 <br><br>
 
-<label>有給希望</label>
-<input type="checkbox">
+<button id="saveButton">
 
-<br><br>
+保存
 
-<label>備考</label><br>
-<textarea rows="4" cols="30"></textarea>
+</button>
 
-<br><br>
+</div>
 
-<button>保存</button>
+<div style="margin-top:30px;">
 
-<button>カレンダーへ</button>
+<button onclick="goHome()">
 
-<br><br>
+← トップへ戻る
 
-<a href="index.html">← ホームへ戻る</a>
+</button>
+
+</div>
+
+</div>
+
+<script src="staffData.js"></script>
+
 <script src="script.js"></script>
+
+<script src="calendar.js"></script>
+
 </body>
+
 </html>
