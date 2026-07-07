@@ -4,87 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ナリシフト</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
 
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="container">
+<div class="top-page">
 
-    <!-- ヘッダー -->
-    <header class="header">
+    <div class="top-header-image"></div>
 
-        <div class="hospital-name">
-            なりた犬猫病院
-        </div>
-
-        <h1 class="title">
-            🐾 ナリシフト 🐾
-        </h1>
-
-        <p class="subtitle">
-            パート・アルバイト専用シフト希望システム
-        </p>
-
-    </header>
-
-    <!-- メニュー -->
-    <main>
+    <section class="hero">
 
         <div class="menu-grid">
 
-            <div class="menu-card"
-                 onclick="goStaff()">
+  <div class="menu-card" onclick="goStaff()">
+    <div class="icon"><span class="material-symbols-rounded">calendar_month</span></div>
+    <h2>シフト希望を提出</h2>
+    <p>希望する日と時間を選択して提出します</p>
+    <div class="card-arrow">›</div>
+</div>
 
-                <div class="icon">
-                    📅
-                </div>
-
-                <h2>
-                    シフト希望を提出
-                </h2>
-
-                <p>
-                    希望する勤務日を入力します
-                </p>
-
-            </div>
-
-            <div class="menu-card"
-                 onclick="goManager()">
-
-                <div class="icon">
-                    📋
-                </div>
-
-                <h2>
-                    管理者画面
-                </h2>
-
-                <p>
-                    スタッフ全員の希望を確認します
-                </p>
-
-            </div>
+<div class="menu-card" onclick="goManager()">
+    <div class="icon"><span class="material-symbols-rounded">fact_check</span></div>
+    <h2>管理者画面</h2>
+    <p>シフトの確認・調整を行います</p>
+    <div class="card-arrow">›</div>
+</div>
+          
 
         </div>
 
-    </main>
+    </section>
 
-    <!-- フッター -->
-
-    <footer class="footer">
-
-        <p>
-            NariShift Version 1.0
-        </p>
-
-        <p>
-            © Narita Animal Hospital
-        </p>
-
-    </footer>
+    <div class="top-footer-image"></div>
 
 </div>
 
@@ -92,4 +48,3 @@
 
 </body>
 </html>
-

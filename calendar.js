@@ -30,6 +30,9 @@ const monthTitle = document.getElementById("monthTitle");
 const calendar = document.getElementById("calendar");
 
 const staffSelect = document.getElementById("staffSelect");
+const staffTrigger = document.getElementById("staffTrigger");
+const staffTriggerText = document.getElementById("staffTriggerText");
+const staffOptions = document.getElementById("staffOptions");
 
 const shiftType = document.getElementById("shiftType");
 
@@ -49,18 +52,29 @@ window.addEventListener("DOMContentLoaded", init);
 
 function init() {
 
-    if (staffSelect) {
+    if (staffTrigger) {
 
         createStaffList();
 
-        staffSelect.addEventListener(
-            "change",
-            changeStaff
-        );
+        staffTrigger.addEventListener("click", function () {
+
+            staffOptions.classList.toggle("open");
+
+        });
+
+        document.addEventListener("click", function (e) {
+
+            if (!staffTrigger.contains(e.target) && !staffOptions.contains(e.target)) {
+
+                staffOptions.classList.remove("open");
+
+            }
+
+        });
 
     }
 
-    if (calendar && !staffSelect) {
+    if (calendar && !staffTrigger) {
 
         createManagerCalendar();
 
@@ -69,38 +83,53 @@ function init() {
 }
 
 
+
 /*======================================
  スタッフ一覧
 ======================================*/
 
+
 function createStaffList() {
 
-    staffSelect.innerHTML = "";
-
-    const first =
-        document.createElement("option");
-
-    first.value = "";
-    first.textContent =
-        "スタッフを選択してください";
-
-    staffSelect.appendChild(first);
+    staffOptions.innerHTML = "";
 
     getAllStaff().forEach(staff => {
 
-        const option =
-            document.createElement("option");
+        const option = document.createElement("div");
+        option.className = "custom-select-option";
 
-        option.value = staff.name;
+        const dot = document.createElement("span");
+        dot.className = "staff-dot";
+        dot.style.background = staff.color;
 
-        option.textContent =
-            `${staff.icon} ${staff.name}`;
+        const label = document.createElement("span");
+        label.textContent = staff.name;
 
-        staffSelect.appendChild(option);
+        option.appendChild(dot);
+        option.appendChild(label);
+
+        option.addEventListener("click", function () {
+
+            selectedStaff = staff.name;
+            staffTriggerText.textContent = staff.name;
+            staffOptions.classList.remove("open");
+
+            createPatternList();
+
+            if (typeof createCalendar === "function") {
+
+                createCalendar();
+
+            }
+
+        });
+
+        staffOptions.appendChild(option);
 
     });
 
 }
+
 
 /*======================================
  スタッフ変更
@@ -428,20 +457,25 @@ function createManagerCalendar() {
 
                 const parsed = JSON.parse(data);
 
-                const line = document.createElement("div");
+　　　　　　　　　　const line = document.createElement("div");
                 line.className = "manager-day-line";
-                line.style.color = staff.color;
+
+                const dot = document.createElement("span");
+                dot.className = "staff-dot";
+                dot.style.background = staff.color;
 
                 const label =
                     parsed.type === "勤務"
                         ? parsed.pattern
                         : parsed.type;
 
-                line.textContent =
-                    `${staff.icon} ${label}`;
+                const text = document.createElement("span");
+                text.textContent = label;
+
+                line.appendChild(dot);
+                line.appendChild(text);
 
                 dayEl.appendChild(line);
-
             }
 
         });

@@ -9,6 +9,8 @@
 content="width=device-width, initial-scale=1.0">
 
 <title>ナリシフト｜スタッフ画面</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="style.css">
 
@@ -20,9 +22,9 @@ content="width=device-width, initial-scale=1.0">
 
 <header class="header">
 
-<h1>🐾 ナリシフト</h1>
+<p class="hospital-name">なりた犬猫病院</p>
 
-<p>なりた犬猫病院</p>
+<h1 class="title">シフト管理システム</h1>
 
 </header>
 
@@ -41,9 +43,17 @@ content="width=device-width, initial-scale=1.0">
 
 </label>
 
-<select id="staffSelect">
+<div class="custom-select" id="staffSelect">
 
-</select>
+    <div class="custom-select-trigger" id="staffTrigger">
+        <span id="staffTriggerText">スタッフを選択してください</span>
+        <span class="custom-select-arrow">▾</span>
+    </div>
+
+    <div class="custom-select-options" id="staffOptions"></div>
+
+</div>
+
 
 </div>
 

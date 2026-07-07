@@ -10,14 +10,15 @@
 
 body{
     font-family:
+        "M PLUS Rounded 1c",
         "Hiragino Kaku Gothic ProN",
         "Yu Gothic",
         sans-serif;
 
-    background:#eef7ea;
-
-    color:#234d20;
+    background:#fefef9;
+    color:#333333;
 }
+
 
 /* -------------------------
     全体
@@ -54,15 +55,16 @@ body{
 
 .title{
 
-    font-size:72px;
+    font-size:48px;
 
-    color:#2e7d32;
+    color:#3d8c45;
 
     margin-bottom:15px;
 
     font-weight:bold;
 
 }
+
 
 .subtitle{
 
@@ -122,13 +124,14 @@ body{
 
 .menu-card h2{
 
-    color:#2e7d32;
+    color:#3d8c45;
 
     margin-bottom:15px;
 
     font-size:34px;
 
 }
+
 
 .menu-card p{
 
@@ -143,10 +146,9 @@ body{
 /* -------------------------
     共通ボタン
 --------------------------*/
-
 button{
 
-    background:#5ca75c;
+    background:#3d8c45;
 
     color:white;
 
@@ -166,9 +168,10 @@ button{
 
 button:hover{
 
-    background:#3d8c45;
+    background:#2e7031;
 
 }
+
 
 /* -------------------------
     入力欄
@@ -395,5 +398,303 @@ textarea{
     font-weight:bold;
 
     line-height:1.4;
+
+}
+/* =====================================
+   トップ画面専用デザイン
+===================================== */
+
+.top-page{
+
+    background:#f8f8f0;
+
+}
+
+.top-header-image{
+
+    width:100%;
+
+    aspect-ratio:750/453;
+
+    background-image:url('images/top-header-bg.png');
+
+    background-size:cover;
+
+    background-position:center;
+
+}
+
+.top-footer-image{
+
+    width:100%;
+
+    aspect-ratio:750/131;
+
+    background-image:url('images/top-footer-bg.png');
+
+    background-size:cover;
+
+    background-position:center;
+
+    margin-top:40px;
+
+}
+
+.hero{
+
+    text-align:center;
+
+    padding:50px 6% 20px;
+
+}
+
+.menu-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+
+    gap:30px;
+
+    max-width:600px;
+
+    margin:0 auto;
+
+}
+
+.menu-card{
+
+    position:relative;
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:40px 25px;
+
+    text-align:center;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+    box-shadow:0 6px 18px rgba(0,0,0,.1);
+
+}
+
+.menu-card:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:0 10px 24px rgba(0,0,0,.15);
+
+}
+
+.menu-card .icon{
+
+    font-size:60px;
+
+    margin-bottom:15px;
+
+}
+
+.menu-card h2{
+
+    color:#2e7d32;
+
+    margin-bottom:10px;
+
+    font-size:26px;
+
+}
+
+.menu-card p{
+
+    font-size:15px;
+
+    color:#666;
+
+    line-height:1.7;
+
+}
+
+.card-arrow{
+
+    position:absolute;
+
+    bottom:20px;
+
+    right:20px;
+
+    width:34px;
+
+    height:34px;
+
+    background:#5ca75c;
+
+    color:white;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:18px;
+
+}
+/* -------------------------
+    スタッフカラードット
+--------------------------*/
+
+.staff-dot{
+
+    display:inline-block;
+
+    width:10px;
+
+    height:10px;
+
+    border-radius:50%;
+
+    margin-right:6px;
+
+    vertical-align:middle;
+
+}
+
+.staff-list-item{
+
+    display:flex;
+
+    align-items:center;
+
+    margin-bottom:10px;
+
+    font-size:16px;
+
+}
+
+.manager-day-line{
+
+    display:flex;
+
+    align-items:center;
+
+    font-size:10px;
+
+    margin-top:3px;
+
+    font-weight:bold;
+
+    line-height:1.4;
+
+}
+/* -------------------------
+    カスタムプルダウン
+--------------------------*/
+
+.custom-select{
+
+    position:relative;
+
+    margin-top:8px;
+
+    margin-bottom:20px;
+
+}
+
+.custom-select-trigger{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:12px;
+
+    border:1px solid #b8d8b8;
+
+    border-radius:8px;
+
+    background:white;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+}
+
+.custom-select-arrow{
+
+    font-size:12px;
+
+    color:#888;
+
+}
+
+.custom-select-options{
+
+    display:none;
+
+    position:absolute;
+
+    top:calc(100% + 6px);
+
+    left:0;
+
+    right:0;
+
+    background:white;
+
+    border:1px solid #b8d8b8;
+
+    border-radius:8px;
+
+    box-shadow:0 6px 18px rgba(0,0,0,.12);
+
+    z-index:10;
+
+    overflow:hidden;
+
+}
+
+.custom-select-options.open{
+
+    display:block;
+
+}
+
+.custom-select-option{
+
+    display:flex;
+
+    align-items:center;
+
+    padding:12px;
+
+    cursor:pointer;
+
+    transition:.15s;
+
+}
+
+.custom-select-option:hover{
+
+    background:#eef7ea;
+
+}
+/* -------------------------
+    線画アイコン
+--------------------------*/
+
+.material-symbols-rounded{
+
+    font-size:60px;
+
+    color:#3d8c45;
 
 }
