@@ -151,6 +151,30 @@ if (calendar && !staffTrigger) {
             });
 
         }
+  const unconfirmButton = document.getElementById("unconfirmButton");
+
+        if (unconfirmButton) {
+
+            unconfirmButton.addEventListener("click", function () {
+
+                const ok = confirm(
+
+                    `${currentYear}年${currentMonth + 1}月の確定を解除しますか？\n再び編集できるようになります。`
+
+                );
+
+                if (!ok) return;
+
+                localStorage.removeItem(getConfirmKey());
+
+                updateConfirmStatus();
+
+                showMessage("確定を解除しました。");
+
+            });
+
+        }
+              
 
     }
 
