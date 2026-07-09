@@ -115,11 +115,6 @@ content="width=device-width, initial-scale=1.0">
 
 </option>
 
-<option value="休み">
-
-休み
-
-</option>
 
 <option value="有給">
 
@@ -157,6 +152,37 @@ placeholder="備考を入力してください"></textarea>
 保存
 
 </button>
+
+<button id="cancelButton" class="cancel-button">
+
+取消
+
+</button>
+
+</div>
+<div class="card" id="confirmedArea" style="display:none;">
+
+    <h2>
+
+        確定シフト（全員分）
+
+    </h2>
+
+    <p>
+
+        <span id="confirmedMonthLabel"></span>のシフトが確定しました。
+
+    </p>
+
+    <div style="margin-top:15px;">
+        <div class="staff-list-item"><span class="staff-dot" style="background:#2196F3;"></span>山本</div>
+        <div class="staff-list-item"><span class="staff-dot" style="background:#F44336;"></span>吉田</div>
+        <div class="staff-list-item"><span class="staff-dot" style="background:#FBC02D;"></span>市川</div>
+        <div class="staff-list-item"><span class="staff-dot" style="background:#4CAF50;"></span>中村</div>
+        <div class="staff-list-item"><span class="staff-dot" style="background:#9C27B0;"></span>杉浦</div>
+    </div>
+
+    <div id="confirmedCalendar" style="margin-top:15px;"></div>
 
 </div>
 

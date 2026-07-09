@@ -698,3 +698,212 @@ textarea{
     color:#3d8c45;
 
 }
+/* -------------------------
+    取消ボタン
+--------------------------*/
+
+.cancel-button{
+
+    background:white;
+
+    color:#c0392b;
+
+    border:1px solid #c0392b;
+
+    margin-left:10px;
+
+}
+
+.cancel-button:hover{
+
+    background:#fdecea;
+
+}
+/* -------------------------
+    確定ステータス
+--------------------------*/
+
+.status-pending{
+
+    color:#c0392b;
+
+    font-weight:bold;
+
+}
+
+.status-confirmed{
+
+    color:#2e7031;
+
+    font-weight:bold;
+
+}
+
+button:disabled{
+
+    background:#ccc;
+
+    cursor:not-allowed;
+
+}
+/* =====================================
+   印刷用スタイル（管理者画面）
+===================================== */
+
+@media print{
+
+    @page{
+
+        size:A4 landscape;
+
+        margin:8mm;
+
+    }
+
+    body{
+
+        background:white;
+
+    }
+
+    .no-print{
+
+        display:none !important;
+
+    }
+
+    .staff-dot{
+
+        -webkit-print-color-adjust:exact;
+
+        print-color-adjust:exact;
+
+        color-adjust:exact;
+
+    }
+
+    .container{
+
+        width:100%;
+
+        padding:0;
+
+    }
+
+    .card{
+
+        box-shadow:none;
+
+        padding:0;
+
+        margin-bottom:8px;
+
+    }
+
+    .card h2{
+
+        font-size:15px;
+
+        margin-bottom:6px;
+
+    }
+
+    .staff-list-item{
+
+        display:inline-flex;
+
+        margin-right:18px;
+
+        margin-bottom:0;
+
+        font-size:12px;
+
+    }
+
+    #calendar{
+
+        gap:2px;
+
+    }
+
+    .calendar-weekday{
+
+        font-size:11px;
+
+        padding:2px 0;
+
+    }
+
+    .calendar-day{
+
+        border:1px solid #ccc;
+
+        min-height:50px;
+
+        padding:3px;
+
+        background:white;
+
+    }
+
+    .calendar-day:hover{
+
+        background:white;
+
+    }
+
+    .day-number{
+
+        font-size:11px;
+
+    }
+
+    .manager-day-line{
+
+        font-size:8px;
+
+    }
+
+}
+
+
+/* -------------------------
+    確定シフト表示
+--------------------------*/
+
+.confirmed-row{
+
+    padding:8px 0;
+
+    border-bottom:1px solid #eee;
+
+    font-size:15px;
+
+}
+/* -------------------------
+    スタッフ管理
+--------------------------*/
+
+.staff-manage-row{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    padding:10px 0;
+
+    border-bottom:1px solid #eee;
+
+    font-size:14px;
+
+}
+
+.staff-manage-patterns{
+
+    color:#777;
+
+    font-size:12px;
+
+}

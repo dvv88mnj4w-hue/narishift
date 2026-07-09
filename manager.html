@@ -9,8 +9,9 @@
           content="width=device-width, initial-scale=1.0">
 
     <title>管理者画面 | ナリシフト</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="style.css">
 
@@ -22,7 +23,7 @@
 
     <!-- ヘッダー -->
 
-    <header class="header">
+    <header class="header no-print">
 
         <div class="hospital-name">
 
@@ -30,24 +31,23 @@
 
         </div>
 
-       <h1 class="title">
+        <h1 class="title">
 
-    シフト管理システム
+            シフト管理システム
 
-</h1>
+        </h1>
 
-<p class="subtitle">
+        <p class="subtitle">
 
-    管理者画面｜スタッフ希望一覧
+            管理者画面｜スタッフ希望一覧
 
-</p>
-
+        </p>
 
     </header>
 
-    <!-- 戻る -->
+    <!-- 戻る・印刷 -->
 
-    <div style="margin-bottom:25px;">
+    <div class="no-print" style="margin-bottom:25px; display:flex; gap:10px;">
 
         <button onclick="goHome()">
 
@@ -55,11 +55,17 @@
 
         </button>
 
+        <button onclick="window.print()">
+
+            🖨 印刷する
+
+        </button>
+
     </div>
 
-    <!-- スタッフ色分け -->
+   <!-- スタッフ色分け -->
 
- <div class="card">
+<div class="card">
 
     <h2>
 
@@ -69,13 +75,67 @@
 
     <br>
 
-    <div class="staff-list-item"><span class="staff-dot" style="background:#2196F3;"></span>山本</div>
-    <div class="staff-list-item"><span class="staff-dot" style="background:#F44336;"></span>吉田</div>
-    <div class="staff-list-item"><span class="staff-dot" style="background:#FBC02D;"></span>市川</div>
-    <div class="staff-list-item"><span class="staff-dot" style="background:#4CAF50;"></span>中村</div>
-    <div class="staff-list-item"><span class="staff-dot" style="background:#9C27B0;"></span>杉浦</div>
+    <div id="staffColorList"></div>
 
 </div>
+
+<!-- スタッフ管理 -->
+
+<div class="card no-print">
+
+    <h2>
+
+        スタッフ管理
+
+    </h2>
+
+    <label>名前</label>
+    <input type="text" id="newStaffName" placeholder="例：田中">
+
+    <label>色</label>
+    <input type="color" id="newStaffColor" value="#00acc1" style="width:80px; padding:4px;">
+
+    <label>勤務パターン（カンマ区切りで複数可）</label>
+    <input type="text" id="newStaffPatterns" placeholder="例：8:30～12:30, 13:00～17:00">
+
+    <button id="addStaffButton">追加する</button>
+
+    <div id="staffManageList" style="margin-top:20px;"></div>
+
+</div>
+
+
+    <!-- シフト確定 -->
+
+    <div class="card no-print">
+
+        <h2>
+
+            シフト確定
+
+        </h2>
+
+        <p>
+
+            確定すると、その月のデータは編集できなくなります。
+
+        </p>
+
+        <p style="margin-top:10px;">
+
+            状態：<span id="confirmStatus">未確定</span>
+
+        </p>
+
+        <br>
+
+        <button id="confirmButton">
+
+            この月を確定する
+
+        </button>
+
+    </div>
 
     <!-- カレンダー -->
 
