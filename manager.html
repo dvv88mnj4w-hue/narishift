@@ -4,6 +4,8 @@
 <head>
 
     <meta charset="UTF-8">
+    <script src="auth.js"></script>
+    
 
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
@@ -143,24 +145,87 @@
 
 </div>
 
+<!-- 管理者編集 -->
 
-    <!-- カレンダー -->
+<div class="card no-print">
 
-    <div class="card">
+    <h2>
 
-        <h2 id="monthTitle">
+        スタッフの代理編集
 
-            今月の希望一覧
+    </h2>
 
-        </h2>
+    <p>
 
-        <div id="calendar">
+        締切後でもここから編集できます。確定済みの月は、先に「確定を解除」してください。
 
-            <!-- calendar.js が生成 -->
+    </p>
+
+    <label>スタッフ</label>
+
+    <div class="custom-select" id="adminStaffSelect">
+
+        <div class="custom-select-trigger" id="adminStaffTrigger">
+            <span id="adminStaffTriggerText">スタッフを選択してください</span>
+            <span class="custom-select-arrow">▾</span>
+        </div>
+
+        <div class="custom-select-options" id="adminStaffOptions"></div>
+
+    </div>
+
+    <div id="adminCalendarArea" style="display:none;">
+
+        <div id="adminCalendar" style="margin-top:15px;"></div>
+
+        <div style="margin-top:20px;">
+
+            <p>選択日：<span id="adminSelectedDate">未選択</span></p>
+
+            <label>希望区分</label>
+
+            <select id="adminShiftType">
+                <option value="">選択してください</option>
+                <option value="勤務">勤務</option>
+                <option value="有給">有給</option>
+            </select>
+
+            <label>勤務パターン</label>
+
+            <select id="adminWorkPattern"></select>
+
+            <label>備考</label>
+
+            <textarea id="adminMemo" rows="3" placeholder="備考を入力してください"></textarea>
+
+            <br><br>
+
+            <button id="adminSaveButton">保存</button>
+            <button id="adminCancelButton" class="cancel-button">取消</button>
 
         </div>
 
     </div>
+
+</div>
+
+   <!-- カレンダー -->
+
+<div class="card">
+
+    <div class="month-nav">
+        <button id="prevMonthBtn" class="month-nav-btn no-print">◀</button>
+        <h2 id="monthTitle">今月の希望一覧</h2>
+        <button id="nextMonthBtn" class="month-nav-btn no-print">▶</button>
+    </div>
+
+    <div id="calendar">
+
+        <!-- calendar.js が生成 -->
+
+    </div>
+
+</div>
 
 </div>
 

@@ -12,8 +12,8 @@
 
 const today = new Date();
 
-const currentYear = today.getFullYear();
-const currentMonth = today.getMonth();
+let currentYear = today.getFullYear();
+let currentMonth = today.getMonth();
 
 /*======================================
   状態管理
@@ -53,6 +53,8 @@ const confirmButton = document.getElementById("confirmButton");
 window.addEventListener("DOMContentLoaded", init);
 
 function init() {
+    bindMonthNavButtons();
+
 
     if (staffTrigger) {
 
@@ -87,6 +89,7 @@ if (calendar && !staffTrigger) {
         renderStaffColorList("staffColorList");
 
         renderStaffManageList();
+initAdminEdit();
 
         const addStaffButton = document.getElementById("addStaffButton");
 
@@ -892,5 +895,397 @@ function renderStaffManageList() {
         container.appendChild(row);
 
     });
+
+}
+/*======================================
+ 管理者による代理編集（締切を無視）
+======================================*/
+
+let adminSelectedStaff = "";
+let adminSelectedDay = null;
+
+function initAdminEdit() {
+
+    const trigger = document.getElementById("adminStaffTrigger");
+
+    if (!trigger) return;
+
+    const triggerText = document.getElementById("adminStaffTriggerText");
+    const options = document.getElementById("adminStaffOptions");
+    const area = document.getElementById("adminCalendarArea");
+
+    options.innerHTML = "";
+
+    getAllStaff().forEach(staff => {
+
+        const option = document.createElement("div");
+        option.className = "custom-select-option";
+
+        const dot = document.createElement("span");
+        dot.className = "staff-dot";
+        dot.style.background = staff.color;
+
+        const label = document.createElement("span");
+        label.textContent = staff.name;
+
+        option.appendChild(dot);
+        option.appendChild(label);
+
+        option.addEventListener("click", function () {
+
+            adminSelectedStaff = staff.name;
+            adminSelectedDay = null;
+            triggerText.textContent = staff.name;
+            options.classList.remove("open");
+
+            area.style.display = "block";
+
+            renderAdminPatternList();
+            createAdminCalendar();
+
+        });
+
+        options.appendChild(option);
+
+    });
+
+    trigger.addEventListener("click", function () {
+
+        options.classList.toggle("open");
+
+    });
+
+    document.addEventListener("click", function (e) {
+
+        if (!trigger.contains(e.target) && !options.contains(e.target)) {
+
+            options.classList.remove("open");
+
+        }
+
+    });
+
+    document.getElementById("adminSaveButton")
+        .addEventListener("click", adminSaveShift);
+
+    document.getElementById("adminCancelButton")
+        .addEventListener("click", adminCancelShift);
+
+}
+
+function renderAdminPatternList() {
+
+    const select = document.getElementById("adminWorkPattern");
+
+    select.innerHTML = "";
+
+    const first = document.createElement("option");
+    first.value = "";
+    first.textContent = "勤務パターンを選択";
+    select.appendChild(first);
+
+    getPatterns(adminSelectedStaff).forEach(pattern => {
+
+        const option = document.createElement("option");
+        option.value = pattern;
+        option.textContent = pattern;
+        select.appendChild(option);
+
+    });
+
+}
+
+function createAdminCalendar() {
+
+    const container = document.getElementById("adminCalendar");
+
+    container.innerHTML = "";
+    container.style.display = "grid";
+    container.style.gridTemplateColumns = "repeat(7,1fr)";
+    container.style.gap = "6px";
+
+    const weekDays = ["日","月","火","水","木","金","土"];
+
+    weekDays.forEach(w => {
+
+        const el = document.createElement("div");
+        el.className = "calendar-weekday";
+        el.textContent = w;
+        container.appendChild(el);
+
+    });
+
+    const firstDay =
+        new Date(currentYear, currentMonth, 1).getDay();
+
+    const lastDate =
+        new Date(currentYear, currentMonth + 1, 0).getDate();
+
+    for (let i = 0; i < firstDay; i++) {
+
+        container.appendChild(document.createElement("div"));
+
+    }
+
+    for (let day = 1; day <= lastDate; day++) {
+
+        const dayEl = document.createElement("div");
+        dayEl.className = "calendar-day";
+
+        const dayNumber = document.createElement("div");
+        dayNumber.className = "day-number";
+        dayNumber.textContent = day;
+        dayEl.appendChild(dayNumber);
+
+        const key = `${currentYear}-${currentMonth + 1}-${day}-${adminSelectedStaff}`;
+        const saved = localStorage.getItem(key);
+
+        if (saved) {
+
+            const parsed = JSON.parse(saved);
+
+            const info = document.createElement("div");
+            info.className = "day-info";
+
+            info.textContent =
+                parsed.type === "勤務" ? parsed.pattern : parsed.type;
+
+            dayEl.appendChild(info);
+
+        }
+
+        if (adminSelectedDay === day) {
+
+            dayEl.classList.add("selected");
+
+        }
+
+        dayEl.addEventListener("click", function () {
+
+            adminSelectDay(day);
+
+        });
+
+        container.appendChild(dayEl);
+
+    }
+
+}
+
+function adminSelectDay(day) {
+
+    adminSelectedDay = day;
+
+    document.getElementById("adminSelectedDate").textContent =
+        `${currentYear}年${currentMonth + 1}月${day}日`;
+
+    const key = `${currentYear}-${currentMonth + 1}-${day}-${adminSelectedStaff}`;
+    const saved = localStorage.getItem(key);
+
+    const typeEl = document.getElementById("adminShiftType");
+    const patternEl = document.getElementById("adminWorkPattern");
+    const memoEl = document.getElementById("adminMemo");
+
+    if (saved) {
+
+        const parsed = JSON.parse(saved);
+
+        typeEl.value = parsed.type || "";
+        patternEl.value = parsed.pattern || "";
+        memoEl.value = parsed.memo || "";
+
+    } else {
+
+        typeEl.value = "";
+        patternEl.value = "";
+        memoEl.value = "";
+
+    }
+
+    createAdminCalendar();
+
+}
+
+function adminSaveShift() {
+
+    if (!adminSelectedStaff) {
+
+        showMessage("スタッフを選択してください");
+        return;
+
+    }
+
+    if (!adminSelectedDay) {
+
+        showMessage("日付を選択してください");
+        return;
+
+    }
+
+    if (isMonthConfirmed()) {
+
+        showMessage("確定済みです。先に「確定を解除」してください。");
+        return;
+
+    }
+
+    const type = document.getElementById("adminShiftType").value;
+
+    if (!type) {
+
+        showMessage("希望区分を選択してください");
+        return;
+
+    }
+
+    const pattern = document.getElementById("adminWorkPattern").value;
+
+    if (type === "勤務" && !pattern) {
+
+        showMessage("勤務パターンを選択してください");
+        return;
+
+    }
+
+    const data = {
+
+        type: type,
+        pattern: type === "勤務" ? pattern : "",
+        memo: document.getElementById("adminMemo").value
+
+    };
+
+    const key = `${currentYear}-${currentMonth + 1}-${adminSelectedDay}-${adminSelectedStaff}`;
+
+    localStorage.setItem(key, JSON.stringify(data));
+
+    showMessage("保存しました（管理者による編集）。");
+
+    createAdminCalendar();
+    createManagerCalendar();
+
+}
+
+function adminCancelShift() {
+
+    if (!adminSelectedStaff || !adminSelectedDay) {
+
+        showMessage("スタッフと日付を選択してください");
+        return;
+
+    }
+
+    if (isMonthConfirmed()) {
+
+        showMessage("確定済みです。先に「確定を解除」してください。");
+        return;
+
+    }
+
+    const key = `${currentYear}-${currentMonth + 1}-${adminSelectedDay}-${adminSelectedStaff}`;
+
+    if (!localStorage.getItem(key)) {
+
+        showMessage("この日にはまだ入力がありません");
+        return;
+
+    }
+
+    const ok = confirm("この日の入力を取り消しますか？");
+
+    if (!ok) return;
+
+    localStorage.removeItem(key);
+
+    document.getElementById("adminShiftType").value = "";
+    document.getElementById("adminWorkPattern").value = "";
+    document.getElementById("adminMemo").value = "";
+
+    showMessage("取り消しました。");
+
+    createAdminCalendar();
+    createManagerCalendar();
+
+}
+/*======================================
+ 月送り機能
+======================================*/
+
+function bindMonthNavButtons() {
+
+    const prevBtn = document.getElementById("prevMonthBtn");
+    const nextBtn = document.getElementById("nextMonthBtn");
+
+    if (prevBtn) prevBtn.addEventListener("click", goPrevMonth);
+    if (nextBtn) nextBtn.addEventListener("click", goNextMonth);
+
+}
+
+function goPrevMonth() {
+
+    currentMonth--;
+
+    if (currentMonth < 0) {
+
+        currentMonth = 11;
+        currentYear--;
+
+    }
+
+    refreshCurrentView();
+
+}
+
+function goNextMonth() {
+
+    currentMonth++;
+
+    if (currentMonth > 11) {
+
+        currentMonth = 0;
+        currentYear++;
+
+    }
+
+    refreshCurrentView();
+
+}
+
+function refreshCurrentView() {
+
+    selectedDay = null;
+
+    if (typeof adminSelectedDay !== "undefined") {
+
+        adminSelectedDay = null;
+
+    }
+
+    if (monthTitle) {
+
+        monthTitle.textContent = `${currentYear}年${currentMonth + 1}月`;
+
+    }
+
+    if (staffTrigger && selectedStaff) {
+
+        createPatternList();
+        createCalendar();
+        showConfirmedIfNeeded();
+
+    }
+
+    if (calendar && !staffTrigger) {
+
+        createManagerCalendar();
+        updateConfirmStatus();
+
+        if (typeof adminSelectedStaff !== "undefined" && adminSelectedStaff) {
+
+            createAdminCalendar();
+
+        }
+
+    }
 
 }
