@@ -21,6 +21,9 @@ let currentMonth = today.getMonth();
 
 let selectedDay = null;
 let selectedStaff = "";
+let multiSelectMode = false;
+let selectedDays = [];
+
 
 /*======================================
   HTML取得
@@ -60,6 +63,25 @@ function init() {
 
         createStaffList();
 showConfirmedIfNeeded();
+const multiToggle = document.getElementById("multiSelectToggle");
+
+        if (multiToggle) {
+
+            multiToggle.addEventListener("change", function () {
+
+                multiSelectMode = multiToggle.checked;
+                selectedDay = null;
+                selectedDays = [];
+                selectedDate.textContent = "未選択";
+                shiftType.value = "";
+                workPattern.value = "";
+                memo.value = "";
+
+                createCalendar();
+
+            });
+
+        }
 
 
         staffTrigger.addEventListener("click", function () {
@@ -385,7 +407,7 @@ function createCalendar() {
 
         }
 
-        if (selectedDay === day) {
+  if (multiSelectMode ? selectedDays.includes(day) : selectedDay === day) {
 
             dayEl.classList.add("selected");
 
@@ -416,6 +438,37 @@ function selectDay(day) {
 
     }
 
+    if (multiSelectMode) {
+
+        const idx = selectedDays.indexOf(day);
+
+        if (idx === -1) {
+
+            selectedDays.push(day);
+
+        } else {
+
+            selectedDays.splice(idx, 1);
+
+        }
+
+        selectedDays.sort((a, b) => a - b);
+
+        selectedDate.textContent =
+            selectedDays.length > 0
+                ? `${selectedDays.length}日選択中（${selectedDays.join("日, ")}日）`
+                : "未選択";
+
+        shiftType.value = "";
+        workPattern.value = "";
+        memo.value = "";
+
+        createCalendar();
+
+        return;
+
+    }
+
     selectedDay = day;
 
     selectedDate.textContent =
@@ -440,6 +493,7 @@ function selectDay(day) {
     createCalendar();
 
 }
+
 /*======================================
  保存ボタンの処理（3/6）
 ======================================*/
@@ -455,7 +509,9 @@ saveButton.addEventListener("click", function () {
 
     }
 
-    if (!selectedDay) {
+    const targetDays = multiSelectMode ? selectedDays : (selectedDay ? [selectedDay] : []);
+
+    if (targetDays.length === 0) {
 
         showMessage("日付を選択してください");
         return;
@@ -468,13 +524,13 @@ saveButton.addEventListener("click", function () {
         return;
 
     }
+
     if (isMonthConfirmed()) {
 
         confirmedMessage();
         return;
 
     }
-
 
     const type = shiftType.value;
 
@@ -500,17 +556,29 @@ saveButton.addEventListener("click", function () {
 
     };
 
-    const key = createStorageKey(selectedDay);
+    targetDays.forEach(day => {
 
-    localStorage.setItem(key, JSON.stringify(data));
+        const key = createStorageKey(day);
+
+        localStorage.setItem(key, JSON.stringify(data));
+
+    });
 
     saveComplete();
+
+    if (multiSelectMode) {
+
+        selectedDays = [];
+        selectedDate.textContent = "未選択";
+
+    }
 
     createCalendar();
 
 });
 
 }
+
 
 /*======================================
  管理者用カレンダー表示（4/6）
@@ -612,7 +680,9 @@ cancelButton.addEventListener("click", function () {
 
     }
 
-    if (!selectedDay) {
+    const targetDays = multiSelectMode ? selectedDays : (selectedDay ? [selectedDay] : []);
+
+    if (targetDays.length === 0) {
 
         showMessage("日付を選択してください");
         return;
@@ -625,30 +695,32 @@ cancelButton.addEventListener("click", function () {
         return;
 
     }
+
     if (isMonthConfirmed()) {
 
         confirmedMessage();
         return;
 
     }
-    
 
-    const key = createStorageKey(selectedDay);
+    const hasAny = targetDays.some(day => localStorage.getItem(createStorageKey(day)));
 
-    const saved = localStorage.getItem(key);
+    if (!hasAny) {
 
-    if (!saved) {
-
-        showMessage("この日にはまだ入力がありません");
+        showMessage("選択した日に入力がありません");
         return;
 
     }
 
-    const ok = confirm("この日の入力を取り消しますか？");
+    const ok = confirm(`選択した${targetDays.length}日分の入力を取り消しますか？`);
 
     if (!ok) return;
 
-    localStorage.removeItem(key);
+    targetDays.forEach(day => {
+
+        localStorage.removeItem(createStorageKey(day));
+
+    });
 
     shiftType.value = "";
     workPattern.value = "";
@@ -656,11 +728,19 @@ cancelButton.addEventListener("click", function () {
 
     showMessage("取り消しました。");
 
+    if (multiSelectMode) {
+
+        selectedDays = [];
+        selectedDate.textContent = "未選択";
+
+    }
+
     createCalendar();
 
 });
 
 }
+
 /*======================================
  シフト確定機能（6/6）
 ======================================*/
