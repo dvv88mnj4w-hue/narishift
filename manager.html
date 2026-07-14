@@ -185,9 +185,14 @@
 
     </div>
 
-    <div id="adminCalendarArea" style="display:none;">
+   <div id="adminCalendarArea" style="display:none;">
 
-        <div id="adminCalendar" style="margin-top:15px;"></div>
+            <div class="calendar-scroll" style="margin-top:15px;">
+
+                <div id="adminCalendar"></div>
+
+            </div>
+            
 
         <div style="margin-top:20px;">
 
@@ -220,23 +225,28 @@
 
 </div>
 
-   <!-- カレンダー -->
+<!-- カレンダー -->
 
-<div class="card">
+    <div class="card">
 
-    <div class="month-nav">
-        <button id="prevMonthBtn" class="month-nav-btn no-print">◀</button>
-        <h2 id="monthTitle">今月の希望一覧</h2>
-        <button id="nextMonthBtn" class="month-nav-btn no-print">▶</button>
+        <div class="month-nav">
+            <button id="prevMonthBtn" class="month-nav-btn no-print">◀</button>
+            <h2 id="monthTitle">今月の希望一覧</h2>
+            <button id="nextMonthBtn" class="month-nav-btn no-print">▶</button>
+        </div>
+
+        <div class="calendar-scroll">
+
+            <div id="calendar">
+
+                <!-- calendar.js が生成 -->
+
+            </div>
+
+        </div>
+
     </div>
 
-    <div id="calendar">
-
-        <!-- calendar.js が生成 -->
-
-    </div>
-
-</div>
 
 </div>
 

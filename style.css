@@ -983,3 +983,24 @@ button:disabled{
     background:#eef7ea;
 
 }
+/* -------------------------
+    カレンダー横スクロール対応
+--------------------------*/
+
+.calendar-scroll{
+
+    overflow-x:auto;
+
+    -webkit-overflow-scrolling:touch;
+
+    padding-bottom:6px;
+
+}
+
+#calendar,
+#confirmedCalendar,
+#adminCalendar{
+
+    min-width:640px;
+
+}
