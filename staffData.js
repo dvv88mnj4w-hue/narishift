@@ -1,7 +1,7 @@
 /*
 ====================================
-ナリシフト Version1
-スタッフデータ
+ナリシフト
+スタッフデータ（Firebase対応版）
 ====================================
 */
 
@@ -15,87 +15,86 @@ const DEFAULT_STAFFS = [
 
 ];
 
-const STAFF_STORAGE_KEY = "narishift-staff-list";
+let STAFF_LIST_CACHE = [];
 
 /*
 ====================================
-読み込み・保存
+Firebaseからの読み込み
 ====================================
 */
 
-function loadStaffList() {
+async function loadStaffListFromDB() {
 
-    const saved = localStorage.getItem(STAFF_STORAGE_KEY);
+    try {
 
-    if (saved) {
+        const list = await window.fetchAllStaffFromDB();
 
-        return JSON.parse(saved);
+        if (list.length === 0) {
+
+            for (const staff of DEFAULT_STAFFS) {
+
+                await window.saveStaffToDB(staff);
+
+            }
+
+            STAFF_LIST_CACHE = DEFAULT_STAFFS;
+
+        } else {
+
+            STAFF_LIST_CACHE = list;
+
+        }
+
+    } catch (e) {
+
+        console.error("スタッフ一覧の取得に失敗しました:", e);
+        STAFF_LIST_CACHE = DEFAULT_STAFFS;
 
     }
 
-    localStorage.setItem(STAFF_STORAGE_KEY, JSON.stringify(DEFAULT_STAFFS));
-
-    return DEFAULT_STAFFS;
-
-}
-
-function saveStaffList(list) {
-
-    localStorage.setItem(STAFF_STORAGE_KEY, JSON.stringify(list));
-
 }
 
 /*
 ====================================
-共通関数
+共通関数（今まで通りの呼び方のまま使えます）
 ====================================
 */
 
-// 全スタッフ取得
 function getAllStaff() {
 
-    return loadStaffList();
+    return STAFF_LIST_CACHE;
 
 }
 
-// 名前からスタッフ情報を取得
 function getStaff(name) {
 
-    return getAllStaff().find(staff => staff.name === name);
+    return STAFF_LIST_CACHE.find(staff => staff.name === name);
 
 }
 
-// 勤務パターン取得
 function getPatterns(name) {
 
     const staff = getStaff(name);
-
     if (!staff) return [];
-
     return staff.patterns;
 
 }
 
-// 色取得
 function getColor(name) {
 
     const staff = getStaff(name);
-
     if (!staff) return "#999999";
-
     return staff.color;
 
 }
 
 /*
 ====================================
-追加・削除
+追加・削除（Firebase対応）
 ====================================
 */
 
-function addStaffMember(name, color, patternsText) {
-
-    const list = getAllStaff();
+async function addStaffMember(name, color, patternsText) {
 
     const patterns = patternsText
         .split(",")
@@ -103,29 +102,26 @@ function addStaffMember(name, color, patternsText) {
         .filter(p => p.length > 0);
 
     const newId =
-        list.length > 0
-            ? Math.max(...list.map(s => s.id)) + 1
+        STAFF_LIST_CACHE.length > 0
+            ? Math.max(...STAFF_LIST_CACHE.map(s => s.id)) + 1
             : 1;
 
-    list.push({
+    const newStaff = { id: newId, name: name, color: color, patterns: patterns };
 
-        id: newId,
-        name: name,
-        color: color,
-        patterns: patterns
+    await window.saveStaffToDB(newStaff);
 
-    });
-
-    saveStaffList(list);
+    STAFF_LIST_CACHE.push(newStaff);
 
 }
 
-function deleteStaffMember(name) {
+async function deleteStaffMember(name) {
 
-    let list = getAllStaff();
+    const staff = getStaff(name);
 
-    list = list.filter(staff => staff.name !== name);
+    if (!staff) return;
 
-    saveStaffList(list);
+    await window.deleteStaffFromDB(staff.id);
+
+    STAFF_LIST_CACHE = STAFF_LIST_CACHE.filter(s => s.name !== name);
 
 }
