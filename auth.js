@@ -1,14 +1,65 @@
 /*
 ====================================
 ナリシフト
-簡易パスワード保護
+合言葉によるアクセス制限（画面版）
 ====================================
 */
 
 const SITE_PASSWORD = "パートのシフト";
-
-
 const AUTH_STORAGE_KEY = "narishift-auth-ok";
+
+/*======================================
+ ログイン画面（login.html）用の処理
+======================================*/
+
+function initLoginPage() {
+
+    const input = document.getElementById("loginPasswordInput");
+    const button = document.getElementById("loginSubmitButton");
+    const errorMsg = document.getElementById("loginErrorMsg");
+
+    if (!input || !button) return;
+
+    function tryLogin() {
+
+        if (input.value === SITE_PASSWORD) {
+
+            sessionStorage.setItem(AUTH_STORAGE_KEY, "true");
+
+            const redirectTo = sessionStorage.getItem("narishift-redirect-to") || "index.html";
+            sessionStorage.removeItem("narishift-redirect-to");
+
+            window.location.href = redirectTo;
+
+        } else {
+
+            errorMsg.style.display = "block";
+            input.value = "";
+            input.focus();
+
+        }
+
+    }
+
+    button.addEventListener("click", tryLogin);
+
+    input.addEventListener("keydown", function (e) {
+
+        if (e.key === "Enter") {
+
+            tryLogin();
+
+        }
+
+    });
+
+    input.focus();
+
+}
+
+/*======================================
+ 各ページでのチェック
+======================================*/
 
 function checkAuth() {
 
@@ -21,29 +72,19 @@ function checkAuth() {
 
     }
 
-    const input = prompt("合言葉を入力してください");
+    const currentPage = window.location.pathname.split("/").pop() || "index.html";
 
-    if (input === SITE_PASSWORD) {
+    sessionStorage.setItem("narishift-redirect-to", currentPage);
 
-        sessionStorage.setItem(AUTH_STORAGE_KEY, "true");
-
-    } else {
-
-        alert("合言葉が違います。");
-
-        window.location.href = "about:blank";
-
-    }
+    window.location.href = "login.html";
 
 }
 
-checkAuth();
 /*======================================
  管理者画面専用の合言葉
 ======================================*/
 
 const ADMIN_PASSWORD = "水田";
-
 const ADMIN_AUTH_KEY = "narishift-admin-auth-ok";
 
 function checkAdminAuth() {
@@ -69,5 +110,19 @@ function checkAdminAuth() {
         window.location.href = "index.html";
 
     }
+
+}
+
+/*======================================
+ 自動実行（ログイン画面自身では実行しない）
+======================================*/
+
+if (!window.location.pathname.endsWith("login.html")) {
+
+    checkAuth();
+
+} else {
+
+    window.addEventListener("DOMContentLoaded", initLoginPage);
 
 }

@@ -1004,3 +1004,68 @@ button:disabled{
     min-width:640px;
 
 }
+/* -------------------------
+    ログイン画面
+--------------------------*/
+
+.login-hero{
+
+    padding-top:50px;
+
+}
+
+.lock-icon-wrap{
+
+    display:flex;
+
+    justify-content:center;
+
+    margin-bottom:30px;
+
+}
+
+.lock-icon-wrap img{
+
+    width:120px;
+
+    height:120px;
+
+}
+
+.login-card{
+
+    max-width:360px;
+
+    margin:0 auto;
+
+    text-align:center;
+
+}
+
+.login-error{
+
+    color:#c0392b;
+
+    font-size:14px;
+
+    margin-bottom:15px;
+
+}
+
+#loginPasswordInput{
+
+    text-align:center;
+
+    font-size:18px;
+
+}
+
+#loginSubmitButton{
+
+    width:100%;
+
+    font-size:18px;
+
+    padding:16px;
+
+}
