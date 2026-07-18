@@ -1116,3 +1116,14 @@ button:disabled{
     border-radius:6px;
 
 }
+/* -------------------------
+    パスワードのマスク表示（日本語入力対応）
+--------------------------*/
+
+.masked-input{
+
+    -webkit-text-security:disc;
+
+    text-security:disc;
+
+}

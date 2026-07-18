@@ -25,14 +25,14 @@ const toggleBtn = document.getElementById("togglePasswordBtn");
 
         toggleBtn.addEventListener("click", function () {
 
-            if (input.type === "password") {
+            if (input.classList.contains("masked-input")) {
 
-                input.type = "text";
+                input.classList.remove("masked-input");
                 toggleBtn.textContent = "隠す";
 
             } else {
 
-                input.type = "password";
+                input.classList.add("masked-input");
                 toggleBtn.textContent = "表示";
 
             }
