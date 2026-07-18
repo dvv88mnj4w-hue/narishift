@@ -19,7 +19,28 @@ function initLoginPage() {
     const errorMsg = document.getElementById("loginErrorMsg");
 
     if (!input || !button) return;
+const toggleBtn = document.getElementById("togglePasswordBtn");
 
+    if (toggleBtn) {
+
+        toggleBtn.addEventListener("click", function () {
+
+            if (input.type === "password") {
+
+                input.type = "text";
+                toggleBtn.textContent = "隠す";
+
+            } else {
+
+                input.type = "password";
+                toggleBtn.textContent = "表示";
+
+            }
+
+        });
+
+    }
+    
     function tryLogin() {
 
         if (input.value === SITE_PASSWORD) {

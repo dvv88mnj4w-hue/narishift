@@ -1069,3 +1069,50 @@ button:disabled{
     padding:16px;
 
 }
+/* -------------------------
+    パスワード表示切り替え
+--------------------------*/
+
+.password-input-wrap{
+
+    position:relative;
+
+}
+
+.password-input-wrap input{
+
+    padding-right:70px;
+
+}
+
+.toggle-password-btn{
+
+    position:absolute;
+
+    right:8px;
+
+    top:50%;
+
+    transform:translateY(-58%);
+
+    background:none;
+
+    color:#3d8c45;
+
+    border:none;
+
+    padding:6px 10px;
+
+    font-size:13px;
+
+    cursor:pointer;
+
+}
+
+.toggle-password-btn:hover{
+
+    background:#eef7ea;
+
+    border-radius:6px;
+
+}
