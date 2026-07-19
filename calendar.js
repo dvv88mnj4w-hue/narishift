@@ -99,6 +99,7 @@ async function init() {
     await loadStaffListFromDB();
     await loadMonthShifts();
     await loadConfirmStatus();
+showTopConfirmedNoticeIfNeeded();
 
 
 
@@ -1105,6 +1106,7 @@ async function refreshCurrentView() {
         createPatternList();
         createCalendar();
         showConfirmedIfNeeded();
+showTopConfirmedNoticeIfNeeded();
 
     }
 
@@ -1212,5 +1214,28 @@ function showConfirmedIfNeeded() {
     }
 
     area.style.display = "block";
+
+}
+/*======================================
+ 名前選択前の確定お知らせ表示
+======================================*/
+
+function showTopConfirmedNoticeIfNeeded() {
+
+    const notice = document.getElementById("topConfirmedNotice");
+
+    if (!notice) return;
+
+    if (!isMonthConfirmed()) {
+
+        notice.style.display = "none";
+        return;
+
+    }
+
+    document.getElementById("topConfirmedMonthText").textContent =
+        `${currentYear}年${currentMonth + 1}月`;
+
+    notice.style.display = "block";
 
 }

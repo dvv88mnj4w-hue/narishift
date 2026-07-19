@@ -1127,3 +1127,28 @@ button:disabled{
     text-security:disc;
 
 }
+/* -------------------------
+    確定お知らせ（名前選択前）
+--------------------------*/
+
+.confirmed-notice{
+
+    background:#eaf7ec;
+
+    border:1px solid #a8d9ae;
+
+    color:#2e7031;
+
+    padding:14px;
+
+    border-radius:10px;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+    margin-bottom:15px;
+
+    text-align:center;
+
+}
