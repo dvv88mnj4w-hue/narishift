@@ -1167,9 +1167,14 @@ button:disabled{
 
     width:100%;
 
+    max-width:100%;
+
+    overflow:hidden;
+
     box-sizing:border-box;
 
 }
+
 
 #confirmedCalendar.compact-calendar .calendar-weekday{
 
@@ -1187,6 +1192,8 @@ button:disabled{
 
     height:auto !important;
 
+    min-width:0 !important;
+
     padding:2px !important;
 
     overflow:hidden;
@@ -1195,11 +1202,13 @@ button:disabled{
 
 }
 
+
 #confirmedCalendar.compact-calendar .day-number{
 
     font-size:9px !important;
 
 }
+
 
 #confirmedCalendar.compact-calendar .manager-day-line{
 
@@ -1215,13 +1224,14 @@ button:disabled{
 
     gap:1px;
 
-    white-space:nowrap;
+    white-space:normal;
+
+    word-break:break-all;
 
     overflow:hidden;
 
-    text-overflow:ellipsis;
-
 }
+
 
 #confirmedCalendar.compact-calendar .staff-dot{
 
