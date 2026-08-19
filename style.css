@@ -1157,59 +1157,84 @@ button:disabled{
     確定シフト：コンパクト表示（スクロールなし）
 --------------------------*/
 
-.compact-calendar{
+#confirmedCalendar.compact-calendar{
 
-    display:grid;
+    display:grid !important;
 
-    grid-template-columns:repeat(7,1fr);
+    grid-template-columns:repeat(7, minmax(0, 1fr)) !important;
 
-    gap:3px;
+    gap:2px !important;
 
-}
+    width:100%;
 
-.compact-calendar .calendar-weekday{
-
-    font-size:10px;
-
-    padding:2px 0;
+    box-sizing:border-box;
 
 }
 
-.compact-calendar .calendar-day{
+#confirmedCalendar.compact-calendar .calendar-weekday{
 
-    min-height:auto;
+    font-size:9px !important;
 
-    aspect-ratio:1;
+    padding:2px 0 !important;
 
-    padding:3px;
+    text-align:center;
+
+}
+
+#confirmedCalendar.compact-calendar .calendar-day{
+
+    min-height:0 !important;
+
+    height:auto !important;
+
+    padding:2px !important;
 
     overflow:hidden;
 
-}
-
-.compact-calendar .day-number{
-
-    font-size:10px;
+    box-sizing:border-box;
 
 }
 
-.compact-calendar .manager-day-line{
+#confirmedCalendar.compact-calendar .day-number{
 
-    font-size:7px;
-
-    line-height:1.2;
-
-    margin-top:1px;
+    font-size:9px !important;
 
 }
 
-.compact-calendar .staff-dot{
+#confirmedCalendar.compact-calendar .manager-day-line{
 
-    width:5px;
+    font-size:6px !important;
 
-    height:5px;
+    line-height:1.15 !important;
+
+    margin-top:1px !important;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:1px;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
 
 }
+
+#confirmedCalendar.compact-calendar .staff-dot{
+
+    width:4px !important;
+
+    height:4px !important;
+
+    min-width:4px;
+
+    flex-shrink:0;
+
+}
+
 
 /* -------------------------
     自分の出勤日の強調
