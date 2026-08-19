@@ -1226,7 +1226,7 @@ function showConfirmedIfNeeded() {
 
 }
 /*======================================
- 名前選択前の確定お知らせ表示（実際の確定月を自動検索）
+ 名前選択前の確定お知らせ表示（最新の確定月を優先）
 ======================================*/
 
 async function showTopConfirmedNoticeIfNeeded() {
@@ -1239,6 +1239,8 @@ async function showTopConfirmedNoticeIfNeeded() {
     let checkYear = now.getFullYear();
     let checkMonth = now.getMonth() + 1;
 
+    let latestConfirmed = null;
+
     for (let i = 0; i < 3; i++) {
 
         try {
@@ -1247,11 +1249,7 @@ async function showTopConfirmedNoticeIfNeeded() {
 
             if (confirmed) {
 
-                document.getElementById("topConfirmedMonthText").textContent =
-                    `${checkYear}年${checkMonth}月`;
-
-                notice.style.display = "block";
-                return;
+                latestConfirmed = { year: checkYear, month: checkMonth };
 
             }
 
@@ -1272,6 +1270,17 @@ async function showTopConfirmedNoticeIfNeeded() {
 
     }
 
-    notice.style.display = "none";
+    if (latestConfirmed) {
+
+        document.getElementById("topConfirmedMonthText").textContent =
+            `${latestConfirmed.year}年${latestConfirmed.month}月`;
+
+        notice.style.display = "block";
+
+    } else {
+
+        notice.style.display = "none";
+
+    }
 
 }
