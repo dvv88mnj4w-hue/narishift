@@ -998,12 +998,12 @@ button:disabled{
 }
 
 #calendar,
-#confirmedCalendar,
 #adminCalendar{
 
     min-width:640px;
 
 }
+
 /* -------------------------
     ログイン画面
 --------------------------*/

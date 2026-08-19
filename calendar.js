@@ -106,6 +106,8 @@ showTopConfirmedNoticeIfNeeded();
     if (staffTrigger) {
 
         createStaffList();
+
+        showTopConfirmedNoticeIfNeeded();
         showConfirmedIfNeeded();
 
         const multiToggle = document.getElementById("multiSelectToggle");
@@ -1103,10 +1105,9 @@ async function refreshCurrentView() {
 
     if (staffTrigger && selectedStaff) {
 
-        createPatternList();
+                createPatternList();
         createCalendar();
         showConfirmedIfNeeded();
-showTopConfirmedNoticeIfNeeded();
 
     }
 
@@ -1217,7 +1218,7 @@ function showConfirmedIfNeeded() {
         });
 
         confirmedCalendar.appendChild(dayEl);
-        
+
 
     }
 
@@ -1225,25 +1226,52 @@ function showConfirmedIfNeeded() {
 
 }
 /*======================================
- 名前選択前の確定お知らせ表示
+ 名前選択前の確定お知らせ表示（実際の確定月を自動検索）
 ======================================*/
 
-function showTopConfirmedNoticeIfNeeded() {
+async function showTopConfirmedNoticeIfNeeded() {
 
     const notice = document.getElementById("topConfirmedNotice");
 
     if (!notice) return;
 
-    if (!isMonthConfirmed()) {
+    const now = new Date();
+    let checkYear = now.getFullYear();
+    let checkMonth = now.getMonth() + 1;
 
-        notice.style.display = "none";
-        return;
+    for (let i = 0; i < 3; i++) {
+
+        try {
+
+            const confirmed = await window.fetchConfirmStatus(checkYear, checkMonth);
+
+            if (confirmed) {
+
+                document.getElementById("topConfirmedMonthText").textContent =
+                    `${checkYear}年${checkMonth}月`;
+
+                notice.style.display = "block";
+                return;
+
+            }
+
+        } catch (e) {
+
+            console.error("確定状態の確認に失敗しました:", e);
+
+        }
+
+        checkMonth++;
+
+        if (checkMonth > 12) {
+
+            checkMonth = 1;
+            checkYear++;
+
+        }
 
     }
 
-    document.getElementById("topConfirmedMonthText").textContent =
-        `${currentYear}年${currentMonth + 1}月`;
-
-    notice.style.display = "block";
+    notice.style.display = "none";
 
 }
