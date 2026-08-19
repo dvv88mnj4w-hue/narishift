@@ -1152,3 +1152,73 @@ button:disabled{
     text-align:center;
 
 }
+
+/* -------------------------
+    確定シフト：コンパクト表示（スクロールなし）
+--------------------------*/
+
+.compact-calendar{
+
+    display:grid;
+
+    grid-template-columns:repeat(7,1fr);
+
+    gap:3px;
+
+}
+
+.compact-calendar .calendar-weekday{
+
+    font-size:10px;
+
+    padding:2px 0;
+
+}
+
+.compact-calendar .calendar-day{
+
+    min-height:auto;
+
+    aspect-ratio:1;
+
+    padding:3px;
+
+    overflow:hidden;
+
+}
+
+.compact-calendar .day-number{
+
+    font-size:10px;
+
+}
+
+.compact-calendar .manager-day-line{
+
+    font-size:7px;
+
+    line-height:1.2;
+
+    margin-top:1px;
+
+}
+
+.compact-calendar .staff-dot{
+
+    width:5px;
+
+    height:5px;
+
+}
+
+/* -------------------------
+    自分の出勤日の強調
+--------------------------*/
+
+.my-shift-day{
+
+    border-width:3px !important;
+
+    border-style:solid;
+
+}

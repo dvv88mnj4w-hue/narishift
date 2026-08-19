@@ -1147,10 +1147,8 @@ function showConfirmedIfNeeded() {
 
     monthLabel.textContent = `${currentYear}年${currentMonth + 1}月`;
 
-    confirmedCalendar.innerHTML = "";
-    confirmedCalendar.style.display = "grid";
-    confirmedCalendar.style.gridTemplateColumns = "repeat(7,1fr)";
-    confirmedCalendar.style.gap = "6px";
+        confirmedCalendar.innerHTML = "";
+
 
     const weekDays = ["日","月","火","水","木","金","土"];
 
@@ -1182,7 +1180,9 @@ function showConfirmedIfNeeded() {
         dayNumber.textContent = day;
         dayEl.appendChild(dayNumber);
 
-        getAllStaff().forEach(staff => {
+       
+
+                getAllStaff().forEach(staff => {
 
             const parsed = getCachedShift(day, staff.name);
 
@@ -1205,11 +1205,19 @@ function showConfirmedIfNeeded() {
 
                 dayEl.appendChild(line);
 
+                if (staff.name === selectedStaff) {
+
+                    dayEl.classList.add("my-shift-day");
+                    dayEl.style.borderColor = staff.color;
+
+                }
+
             }
 
         });
 
         confirmedCalendar.appendChild(dayEl);
+        
 
     }
 
