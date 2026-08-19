@@ -1165,9 +1165,11 @@ button:disabled{
 
     gap:2px !important;
 
-    width:100%;
+    width:100% !important;
 
-    max-width:100%;
+    max-width:100% !important;
+
+    min-width:0 !important;
 
     overflow:hidden;
 
